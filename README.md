@@ -1,0 +1,10 @@
+# Programação de Bolso
+## Usando o celular como laboratório de programação
+
+A ação de ensino "Programação de Bolso" busca ensinar programação usando o celular. O aparelho móvel passa a ser o laboratório, o dispositivo de entrada, a tela, o sensor e o objeto programável. O aluno, que pode ser um iniciante absoluto em programação, não precisa de computador em nenhum momento. Cada módulo é um projeto que usa um recurso do celular e ensina um conceito. O celular não é só tela, mas um computador com GPS, acelerômetro, câmera, microfone, bússola, vibração, internet e tela sensível ao toque. 
+
+Dessa forma, a proposta é transformar o _smartphone_ de um simples dispositivo de consumo em uma estação de desenvolvimento portátil. Para este fim, usaremos um interpretador BASIC (RFO Basic) que roda em Android, com um editor de texto, que permite que programadores escrevam rapidamente aplicativos com acesso à maioria dos recursos do dispositivo. 
+
+A RFO Basic pode ser classificada principalmente como uma linguagem imperativa e procedural, com uma abordagem de programação orientada a comandos e APIs do dispositivo. Imperativo, pois descrevemos uma sequência de instruções que modificam o estado do programa: variáveis, posições, pontuações, estados de jogo etc. Procedural, porque organizamos o código em rotinas e sub-rotinas, com chamadas, parâmetros e estruturas de controle. O diferencial desta abordagem é a orientação a serviços. Comandos específicos permitem trabalhar com tela, interface gráfica, áudio, síntese de voz, localização e sensores, por exemplo. 
+
+Portanto, não trata-se de um curso convencional de linguagem de programação, mas aprender algoritmos construindo coisas que interagem com o mundo físico por meio do celular. Há também uma diferença importante de motivação. Um programa em Python que imprime números na tela pode ser um excelente exercício de algoritmos, mas um programa em RFO BASIC que utiliza o acelerômetro para movimentar um personagem oferece uma experiência imediatamente tangível. Isso não torna uma linguagem intrinsecamente melhor para aprender programação. São maneiras diferentes de aproximar o estudante dos conceitos. 
