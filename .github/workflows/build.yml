@@ -1,18 +1,14 @@
 # ============================================================
-# Compila as aulas Typst -> PDF automaticamente
+# Compila as aulas Typst -> PDF e empacota os códigos RFO BASIC
 #
 # Disparo 1: a cada push/PR na branch main
-#            -> compila cada aula e anexa os PDFs como Artifact
+#            -> gera PDFs e o .zip com os códigos como Artifacts
 #
 # Disparo 2: ao publicar um Release (tag tipo v1.2.0)
-#            -> publica os PDFs na aba Releases
-#
-# Estrutura esperada:
-#   docs/aulas/src/aula01.typ, aula02.typ ... aula10.typ
-#   docs/aulas/src/apostila.typ  (opcional, junta tudo num PDF só)
+#            -> anexa os PDFs e o .zip dos códigos na aba Release
 # ============================================================
 
-name: build-aulas
+name: build-aulas-e-codigos
 
 on:
   push:
@@ -28,9 +24,12 @@ permissions:
 env:
   SRC_DIR: docs/aulas/src
   OUT_DIR: docs/aulas
+  CODE_DIR: codigos
 
 jobs:
-  build:
+  # BUILD 1: Compilação dos PDFs em Typst
+  build-pdfs:
+    name: Compilar PDFs (Typst)
     runs-on: ubuntu-latest
 
     steps:
@@ -45,7 +44,7 @@ jobs:
 
       - name: Compilar cada aula para PDF
         run: |
-          shopt -s nullglob
+          shopt -s nullglob nocaseglob
           files=("${SRC_DIR}"/aula*.typ)
           if [ ${#files[@]} -eq 0 ]; then
             echo "Nenhum arquivo aula*.typ encontrado em ${SRC_DIR}."
@@ -59,6 +58,7 @@ jobs:
 
       - name: Compilar PDF completo do curso (se apostila.typ existir)
         run: |
+          shopt -s nocaseglob
           if [ -f "${SRC_DIR}/apostila.typ" ]; then
             echo "==> Compilando PDF completo"
             typst compile "${SRC_DIR}/apostila.typ" "${OUT_DIR}/apostila-completa.pdf"
@@ -66,15 +66,61 @@ jobs:
             echo "apostila.typ não encontrado - pulando PDF completo."
           fi
 
-      - name: Enviar PDFs como Artifact (Actions > runs)
+      - name: Enviar PDFs como Artifact
         uses: actions/upload-artifact@v4
         with:
           name: aulas-pdf
           path: ${{ env.OUT_DIR }}/*.pdf
           if-no-files-found: error
 
-      - name: Anexar PDFs ao Release (quando disparado por release)
-        if: github.event_name == 'release'
+  # BUILD 2: Compactação dos códigos fonte em RFO BASIC (.bas)
+  package-code:
+    name: Compactar Códigos (.bas)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Compactar arquivos de código
+        run: |
+          mkdir -p dist
+          if [ -d "${CODE_DIR}" ]; then
+            cd "${CODE_DIR}"
+            zip -r "../../dist/codigos-aulas.zip" . -i "*.bas" "*.BAS"
+          else
+            echo "Diretório ${CODE_DIR} não encontrado!"
+            exit 1
+          fi
+
+      - name: Enviar Códigos ZIP como Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: codigos-zip
+          path: dist/codigos-aulas.zip
+          if-no-files-found: error
+
+  # JOB DE PUBLICAÇÃO: Roda apenas quando um Release é publicado
+  publish-release:
+    name: Anexar ao Release
+    needs: [build-pdfs, package-code]
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar PDFs gerados
+        uses: actions/download-artifact@v4
+        with:
+          name: aulas-pdf
+          path: release-files/
+
+      - name: Baixar ZIP de códigos
+        uses: actions/download-artifact@v4
+        with:
+          name: codigos-zip
+          path: release-files/
+
+      - name: Anexar todos os arquivos ao Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ env.OUT_DIR }}/*.pdf
+          files: release-files/*
