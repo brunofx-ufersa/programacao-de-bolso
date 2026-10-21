@@ -1,7 +1,7 @@
 # ============================================================
 # Compila as aulas Typst -> PDF automaticamente
 #
-# Disparo 1: a cada push na branch main
+# Disparo 1: a cada push/PR na branch main
 #            -> compila cada aula e anexa os PDFs como Artifact
 #
 # Disparo 2: ao publicar um Release (tag tipo v1.2.0)
@@ -9,10 +9,7 @@
 #
 # Estrutura esperada:
 #   docs/aulas/src/aula01.typ, aula02.typ ... aula10.typ
-#   docs/aulas/src/apostila.typ  (opcional, junta tudo num PDF so)
-#
-# Os PDFs sao gerados em docs/aulas/ mas NAO vao para o Git
-# (veja o .gitignore) - so existem como Artifact/Release.
+#   docs/aulas/src/apostila.typ  (opcional, junta tudo num PDF só)
 # ============================================================
 
 name: build-aulas
@@ -37,36 +34,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Baixar o codigo do repositorio
+      - name: Baixar o código do repositório
         uses: actions/checkout@v4
 
       - name: Instalar o Typst
         uses: typst-community/setup-typst@v3
 
+      - name: Garantir diretório de saída
+        run: mkdir -p "${OUT_DIR}"
+
       - name: Compilar cada aula para PDF
         run: |
-          for f in ${SRC_DIR}/aula*.typ; do
-            nome=$(basename "${f%.typ}")
-            echo "==> Compilando $f -> ${OUT_DIR}/${nome}.pdf"
-            typst compile "$f" "${OUT_DIR}/${nome}.pdf"
-          done
+          shopt -s nullglob
+          files=("${SRC_DIR}"/aula*.typ)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "Nenhum arquivo aula*.typ encontrado em ${SRC_DIR}."
+          else
+            for f in "${files[@]}"; do
+              nome=$(basename "${f%.typ}")
+              echo "==> Compilando $f -> ${OUT_DIR}/${nome}.pdf"
+              typst compile "$f" "${OUT_DIR}/${nome}.pdf"
+            done
+          fi
 
       - name: Compilar PDF completo do curso (se apostila.typ existir)
         run: |
-          if [ -f ${SRC_DIR}/apostila.typ ]; then
+          if [ -f "${SRC_DIR}/apostila.typ" ]; then
             echo "==> Compilando PDF completo"
-            typst compile ${SRC_DIR}/apostila.typ ${OUT_DIR}/apostila-completa.pdf
+            typst compile "${SRC_DIR}/apostila.typ" "${OUT_DIR}/apostila-completa.pdf"
           else
-            echo "apostila.typ nao encontrado - pulando PDF completo."
+            echo "apostila.typ não encontrado - pulando PDF completo."
           fi
 
       - name: Enviar PDFs como Artifact (Actions > runs)
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: aulas-pdf
-          path: |
-            ${{ env.OUT_DIR }}/*.pdf
+          path: ${{ env.OUT_DIR }}/*.pdf
           if-no-files-found: error
 
       - name: Anexar PDFs ao Release (quando disparado por release)
