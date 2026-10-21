@@ -1,0 +1,76 @@
+# ============================================================
+# Compila as aulas Typst -> PDF automaticamente
+#
+# Disparo 1: a cada push na branch main
+#            -> compila cada aula e anexa os PDFs como Artifact
+#
+# Disparo 2: ao publicar um Release (tag tipo v1.2.0)
+#            -> publica os PDFs na aba Releases
+#
+# Estrutura esperada:
+#   docs/aulas/src/aula01.typ, aula02.typ ... aula10.typ
+#   docs/aulas/src/apostila.typ  (opcional, junta tudo num PDF so)
+#
+# Os PDFs sao gerados em docs/aulas/ mas NAO vao para o Git
+# (veja o .gitignore) - so existem como Artifact/Release.
+# ============================================================
+
+name: build-aulas
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+env:
+  SRC_DIR: docs/aulas/src
+  OUT_DIR: docs/aulas
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o codigo do repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar o Typst
+        uses: typst-community/setup-typst@v3
+
+      - name: Compilar cada aula para PDF
+        run: |
+          for f in ${SRC_DIR}/aula*.typ; do
+            nome=$(basename "${f%.typ}")
+            echo "==> Compilando $f -> ${OUT_DIR}/${nome}.pdf"
+            typst compile "$f" "${OUT_DIR}/${nome}.pdf"
+          done
+
+      - name: Compilar PDF completo do curso (se apostila.typ existir)
+        run: |
+          if [ -f ${SRC_DIR}/apostila.typ ]; then
+            echo "==> Compilando PDF completo"
+            typst compile ${SRC_DIR}/apostila.typ ${OUT_DIR}/apostila-completa.pdf
+          else
+            echo "apostila.typ nao encontrado - pulando PDF completo."
+          fi
+
+      - name: Enviar PDFs como Artifact (Actions > runs)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aulas-pdf
+          path: |
+            ${{ env.OUT_DIR }}/*.pdf
+          if-no-files-found: error
+
+      - name: Anexar PDFs ao Release (quando disparado por release)
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.OUT_DIR }}/*.pdf

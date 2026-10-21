@@ -1,0 +1,29 @@
+# ============================================================
+# Garante que o Git trate os arquivos do jeito certo
+# ============================================================
+
+# Normaliza fim de linha para LF em todos os arquivos de texto
+* text=auto eol=lf
+
+# --- Códigos-fonte RFO Basic ---------------------------------
+# Tratados como texto puro: diff legível, merge seguro,
+# e contados como BASIC nas estatísticas de linguagem do GitHub
+*.bas        text diff=basic linguist-language=BASIC linguist-detectable=true
+*.basic      text diff=basic linguist-language=BASIC linguist-detectable=true
+
+# --- Documentação ---------------------------------------------
+*.md         text
+*.typ        text linguist-language=Typst
+*.txt        text
+*.yml        text
+*.yaml       text
+
+# --- Binários / mídia (nunca aplicar conversão de fim de linha) ---
+*.pdf        binary
+*.png        binary
+*.jpg        binary
+*.jpeg       binary
+*.gif        binary
+*.webp       binary
+*.mp4        binary
+*.zip        binary

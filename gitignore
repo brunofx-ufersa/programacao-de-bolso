@@ -1,0 +1,23 @@
+# --- PDFs gerados pela CI (fonte = docs/aulas/src/*.typ) ---
+docs/aulas/*.pdf
+
+# --- Artefatos de compilação local do Typst ---
+*.pdf.tmp
+
+# --- Sistema operacional ---
+.DS_Store
+Thumbs.db
+
+# --- Editores ---
+.vscode/
+.idea/
+*.swp
+*~
+
+# --- Python (se usar scripts utilitarios no repo) ---
+__pycache__/
+*.pyc
+
+# --- Logs e temporarios ---
+*.log
+*.tmp
