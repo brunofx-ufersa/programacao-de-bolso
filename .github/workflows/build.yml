@@ -73,9 +73,9 @@ jobs:
           path: ${{ env.OUT_DIR }}/*.pdf
           if-no-files-found: error
 
-  # BUILD 2: Compactação dos códigos fonte em RFO BASIC (.bas)
+  # BUILD 2: Compactação dos códigos das aulas (pasta codigos/)
   package-code:
-    name: Compactar Códigos (.bas)
+    name: Compactar Códigos
     runs-on: ubuntu-latest
 
     steps:
@@ -84,12 +84,12 @@ jobs:
 
       - name: Compactar arquivos de código
         run: |
-          mkdir -p dist
+          mkdir -p "${GITHUB_WORKSPACE}/dist"
           if [ -d "${CODE_DIR}" ]; then
             cd "${CODE_DIR}"
-            zip -r "../../dist/codigos-aulas.zip" . -i "*.bas" "*.BAS"
+            zip -r "${GITHUB_WORKSPACE}/dist/codigos-aulas.zip" .
           else
-            echo "Diretório ${CODE_DIR} não encontrado!"
+            echo "::error::Diretório ${CODE_DIR} não encontrado!"
             exit 1
           fi
 
