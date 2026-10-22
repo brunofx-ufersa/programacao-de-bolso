@@ -1,11 +1,6 @@
 # ============================================================
 # Compila as aulas Typst -> PDF e empacota os códigos RFO BASIC
-#
-# Disparo 1: a cada push/PR na branch main
-#            -> gera PDFs e o .zip com os códigos como Artifacts
-#
-# Disparo 2: ao publicar um Release (tag tipo v1.2.0)
-#            -> anexa os PDFs e o .zip dos códigos na aba Release
+# Nome da pasta gerada para os códigos: curso-ufersa
 # ============================================================
 
 name: build-aulas-e-codigos
@@ -73,34 +68,33 @@ jobs:
           path: ${{ env.OUT_DIR }}/*.pdf
           if-no-files-found: error
 
-  # BUILD 2: Compactação dos códigos das aulas (pasta codigos/)
+  # BUILD 2: Preparação da pasta curso-ufersa com os códigos
   package-code:
-    name: Compactar Códigos
+    name: Preparar Códigos (curso-ufersa)
     runs-on: ubuntu-latest
 
     steps:
       - name: Baixar o código do repositório
         uses: actions/checkout@v4
 
-      - name: Compactar arquivos de código
+      - name: Organizar códigos na pasta curso-ufersa
         run: |
-          mkdir -p "${GITHUB_WORKSPACE}/dist"
+          mkdir -p curso-ufersa
           if [ -d "${CODE_DIR}" ]; then
-            cd "${CODE_DIR}"
-            zip -r "${GITHUB_WORKSPACE}/dist/codigos-aulas.zip" .
+            cp -r "${CODE_DIR}"/* curso-ufersa/
           else
             echo "::error::Diretório ${CODE_DIR} não encontrado!"
             exit 1
           fi
 
-      - name: Enviar Códigos ZIP como Artifact
+      - name: Enviar pasta curso-ufersa como Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: codigos-zip
-          path: dist/codigos-aulas.zip
+          name: curso-ufersa
+          path: curso-ufersa/
           if-no-files-found: error
 
-  # JOB DE PUBLICAÇÃO: Roda apenas quando um Release é publicado
+  # JOB DE PUBLICAÇÃO: Roda apenas quando publicar uma Release
   publish-release:
     name: Anexar ao Release
     needs: [build-pdfs, package-code]
@@ -114,11 +108,17 @@ jobs:
           name: aulas-pdf
           path: release-files/
 
-      - name: Baixar ZIP de códigos
+      - name: Baixar pasta de códigos curso-ufersa
         uses: actions/download-artifact@v4
         with:
-          name: codigos-zip
-          path: release-files/
+          name: curso-ufersa
+          path: release-files/curso-ufersa/
+
+      - name: Compactar curso-ufersa.zip para o Release
+        run: |
+          cd release-files
+          zip -r curso-ufersa.zip curso-ufersa/
+          rm -rf curso-ufersa
 
       - name: Anexar todos os arquivos ao Release
         uses: softprops/action-gh-release@v2

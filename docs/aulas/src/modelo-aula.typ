@@ -242,6 +242,8 @@
   }
   show heading.where(level: 2): it => block(above: 1.3em, below: 0.7em, sticky: true,
     text(fill: azul, weight: "bold", size: 12.5pt, it.body))
+  show heading.where(level: 3): it => block(above: 1.3em, below: 0.7em, sticky: true,
+    text(fill: cinza, weight: "bold", size: 12.5pt, it.body))
 
   // ----- detalhes tipográficos -----
   show strong: set text(fill: azul-escuro)
@@ -275,3 +277,102 @@
 
   body
 }
+
+// 1. Função que cria a nuvem de palavras fluida (inline)
+#let nuvem(palavras) = {
+  align(center)[
+    #for (texto-palavra, tamanho, cor) in palavras [
+      #box(inset: (x: 4pt, y: 2pt))[
+        #text(size: tamanho, fill: cor, weight: if tamanho >= 18pt { "bold" } else { "regular" })[#texto-palavra]
+      ]
+    ]
+  ]
+}
+
+
+// ============================================================
+//  GUIA: levando os códigos do curso para o celular (Aula 0)
+// ============================================================
+// ---------- componentes locais ----------
+
+// link azul e sublinhado
+#let lnk(url, texto) = link(url, underline(text(fill: azul)[#texto]))
+
+// cabeçalho de passo: bolinha numerada + título
+#let passo(n, titulo, sub: none) = block(
+  width: 100%, above: 1.8em, below: 0.9em, sticky: true,
+)[
+  #grid(columns: (auto, 1fr), column-gutter: 12pt, align: horizon,
+    circle(radius: 15pt, fill: azul, inset: 0pt)[
+      #text(fill: white, weight: "bold", size: 14pt)[#n]
+    ],
+    [
+      #text(fill: azul-escuro, weight: "bold", size: 15pt)[#titulo]
+      #if sub != none [ \ #text(fill: cinza, size: 9.5pt)[#sub]]
+    ],
+  )
+  #v(-2pt)
+  #line(length: 100%, stroke: 1pt + azul-claro)
+]
+
+// lista de ações numeradas, com bolinha clara
+#let acoes(..itens) = block(width: 100%, above: 0.4em, below: 0.6em)[
+  #for (i, item) in itens.pos().enumerate() [
+    #grid(columns: (20pt, 1fr), column-gutter: 8pt,
+      circle(radius: 8.5pt, fill: azul-claro, inset: 0pt)[
+        #text(fill: azul-escuro, weight: "bold", size: 9pt)[#(i + 1)]
+      ],
+      item,
+    )
+    #v(6pt)
+  ]
+]
+
+// etiqueta colorida para separar "no celular" e "no computador"
+#let etiqueta(texto, cor) = block(above: 1.2em, below: 0.6em, sticky: true)[
+  #box(fill: cor, radius: 3pt, inset: (x: 8pt, y: 4.5pt),
+    text(fill: white, weight: "bold", size: 8pt, tracking: 1pt)[#upper(texto)])
+]
+
+// fluxo de quatro etapas no topo
+#let fluxo(..etapas) = {
+  let itens = ()
+  for (i, e) in etapas.pos().enumerate() {
+    if i > 0 {
+      itens.push(align(center + horizon,
+        text(fill: azul-medio, size: 18pt, weight: "bold")[›]))
+    }
+    itens.push(block(width: 100%, fill: azul-gelo, stroke: 1pt + azul-claro,
+      radius: 8pt, inset: (x: 6pt, y: 9pt),
+      align(center)[
+        #text(fill: azul, weight: "bold", size: 15pt)[#(i + 1)] \
+        #text(fill: azul-escuro, weight: "bold", size: 9.5pt)[#e.at(0)] \
+        #text(fill: cinza, size: 8pt)[#e.at(1)]
+      ]))
+  }
+  grid(columns: (1fr, auto, 1fr, auto, 1fr, auto, 1fr), column-gutter: 4pt,
+    align: horizon, ..itens)
+}
+
+// cartão de opção (USB × FTP)
+#let opcao(titulo, tag, cor, body) = block(
+  width: 100%, breakable: false, radius: 8pt, stroke: 1.2pt + cor, clip: true,
+)[
+  #block(width: 100%, fill: cor, inset: (x: 12pt, y: 8pt))[
+    #text(fill: white, weight: "bold", size: 11pt)[#titulo]
+    #h(1fr)
+    #text(fill: white, weight: "bold", size: 8pt, tracking: 0.8pt)[#upper(tag)]
+  ]
+  #block(width: 100%, inset: 12pt)[#body]
+]
+
+// árvore de pastas (sem numeração de linhas)
+#let arvore(..linhas) = block(
+  width: 100%, breakable: false, above: 1em, below: 1em,
+  fill: rgb("#0F1B33"), radius: 8pt, inset: (x: 14pt, y: 12pt),
+)[
+  #for l in linhas.pos() {
+    text(font: fonte-codigo, size: 9.3pt, fill: rgb("#E6EEFA"))[#l.replace(" ", "\u{00A0}")]
+    linebreak()
+  }
+]

@@ -20,7 +20,22 @@ O conteúdo usa a primeira disponível das seguintes fontes:
 
 Para visualização do documento, usamos o plugin `Tinymist Typst` do VS Code. Já para compilar para PDF, execute o comando `typst compile arquivo.typ`. Não esqueça de instalar o [compilador](https://typst.app/open-source/).
 
-# Organização
+Caso não queira editar este curso e fazer contribuições, você pode encontrar as aulas em `.pdf` e os códigos dos programas na aba *Actions* (ações). Clica no _workflow_ mais recente com o _ticket_ verde. No final da página você vai encontrar os *Artifacts* (artefatos) para _download_.
+
+
+# Organização do Conteúdo
+
+
+| Etapa  | Conceitos e Recursos |
+|--------|----------------------|
+| Aula 00 | Instalação e configuração do ambiente |
+| Aula 01 | Entrada de dados, exibição na tela, tomada de decisão e síntese de voz |
+| Aula 02 | Expressões, números aleatórios, formatação de texto e caixa de diálogo |
+| Aula 03 | Laço `for`, acumulador e quiz da tabuada |
+| Aula 04 | Laço `while`, sentinela, laços aninhados e quiz da tabuada turbinado |
+| Aula 05 | Laço `do`, açúcar sintático, acelerômetro e variável de estado |
+| Aula 06 | Tela gráfica, formas geométricas, coordenadas, animação e colisão |
+| Aula 07 | Funções, parâmetros, escopo, retorno e `include` |
 
 
 
