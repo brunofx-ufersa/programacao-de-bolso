@@ -325,7 +325,5 @@ end
 )
 
 #proxima[
-  *Aula 6: Bolinha em movimento.* Vamos *desenhar na tela* com os comandos `gr.*` e
-  mover uma bolinha de acordo com a inclinação do celular, numa mistura de
-  acelerômetro, coordenadas e animação. É a porta de entrada para os jogos.
+  *Aula 6: Animação.* Vamos *desenhar na tela* com os comandos `gr.*` e mover uma bolinha de acordo com a inclinação do celular, numa mistura de acelerômetro, coordenadas e animação. É a porta de entrada para os jogos.
 ]

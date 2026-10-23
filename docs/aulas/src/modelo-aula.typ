@@ -7,6 +7,7 @@
 //    #show: aula.with(numero: 2, titulo: "...", ...)
 // ============================================================
   #import "@preview/codly:2.0.0" as codly  
+  #import "@preview/cetz:0.5.3"
 
 
 // ---------- Paleta ----------
