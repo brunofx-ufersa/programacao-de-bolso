@@ -27,7 +27,7 @@ while continuar = 1
     msg$ = "Sequência: " + int$(acertos) + "." 
   endif
 
-  print msg$$
+  print msg$
   dialog.message "Fim de jogo", "Jogar de novo?", escolha, "Sim", "Não"
   if escolha <> 1 then continuar = 0
 repeat

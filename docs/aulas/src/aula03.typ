@@ -52,11 +52,11 @@ end
 ]<codigo-for>
 
  #tela[
-  Rodada 1 \
-  Rodada 2 \
-  Rodada 3 \
-  Rodada 4 \
-  Rodada 5
+  Rodada: 1 \
+  Rodada: 2 \
+  Rodada: 3 \
+  Rodada: 4 \
+  Rodada: 5
 ] 
 
 #etapa("rodar")[Execute e depois troque o `5` por `8`. Só um número mudou, mas o programa repetiu mais vezes.]
@@ -87,7 +87,7 @@ tts.stop
 
 end
 ```,  
-  file: "laco-for-step.bas`",
+  file: "laco-for-step.bas",
   )
 ]
 
@@ -264,7 +264,7 @@ Mude *uma coisa de cada vez* e observe o que acontece:
 #etapa("quebrar")[Troque o `9` por `99` nas duas linhas de sorteio. O jogo ficou mais difícil? E mais divertido?]
 
 #dica[
-  O quarto experimento mostra a vantagem de usar variáveis como `total` em vez de repetir o número `10` em vários lugares: mudar o programa exige alterar *um único ponto*. Você pode modificar o programa para que o usuário diga quantas rodadas ele deseja jogar, basta usa `input` para a variável `total`.
+  O quarto experimento mostra a vantagem de usar variáveis como `total` em vez de repetir o número `10` em vários lugares: mudar o programa exige alterar *um único ponto*. Você pode modificar o programa para que o usuário diga quantas rodadas ele deseja jogar, basta usar `input` para a variável `total`.
 ]
 
 #desafio("Duelo de dois jogadores")[

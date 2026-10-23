@@ -118,7 +118,7 @@ Quando chegar na sétima rodada, `n = 64` e `vezes = 6`. Como a condição é ve
 
 #etapa("rodar")[Confira o resultado.]
 
-Note que a verificação da condição é no ínicio do laço.
+Note que a verificação da condição é no início do laço.
 
 == Soma dos dígitos
 
@@ -260,7 +260,7 @@ while continuar = 1
     msg$ = "Sequência: " + int$(acertos) + "." 
   endif
 
-  print msg$$
+  print msg$
   dialog.message "Fim de jogo", "Jogar de novo?", escolha, "Sim", "Não"
   if escolha <> 1 then continuar = 0
 repeat

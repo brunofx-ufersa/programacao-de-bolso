@@ -14,7 +14,7 @@
     "  mensagem$,",
     "  opcao,",
     "  opcao1$,",
-    "  opcap2$",
+    "  opcao2$",
     "",
     "> _",
   ),
@@ -154,7 +154,7 @@ print using$("br", "Por pessoa ........ R$ %.2f", porcab)
 
 O comando `using$` formata uma _string_, o primeiro parametro é a localidade. No caso acima, usamos `br` para Brasil, então a casa decimal vai ser exibida com vírgula ao invés de ponto. Em seguida, temos uma _string_ com `%f` e depois um valor. Esse `f` significa _float_ e é usado para números decimais. 
 
-Quando o texto for exibido, o valor de gorjeta, por exemplo, vai substituir o `%f`, portanto trata-se de um espaço reservado. O fato de colocarmos `.2f` siginifica que estamos limitando em duas casas decimais.
+Quando o texto for exibido, o valor de `gorjeta`, por exemplo, vai substituir o `%f`, portanto trata-se de um espaço reservado. O fato de colocarmos `.2f` significa que estamos limitando em duas casas decimais.
 
 
 = Quebre o código!
@@ -216,11 +216,9 @@ end
 
 = Jogo Craps
 
-A cena clássica hollywoodiana com a mesa cheia de gente gritando números, assoprando os dados e torcendo junta é do jogo _Craps_.
+A cena clássica hollywoodiana com a mesa cheia de gente gritando números, assoprando os dados e torcendo junta é do jogo _Craps_. Ele usa dois dados comuns e gira em torno do _shooter_ (o jogador da vez que lança os dados). As apostas são feitas antes dos lançamentos, tentando prever a soma dos dois dados.
 
-O jogo usa dois dados comuns de 6 lados e gira em torno do _shooter_ (o jogador da vez que lança os dados). As apostas são feitas antes dos lançamentos, tentando prever a soma dos dois dados.
-
-O programa a seguir simula uma rodado do jogo. O _shooter_ faz um palpite, o sistema lança os dados e imprime o resultado.
+O programa a seguir simula uma rodada do jogo. O _shooter_ faz um palpite, o sistema lança os dados e imprime o resultado.
 
 
 #figure(caption:[Craps])[
@@ -236,6 +234,12 @@ print "Dado 1: " + int$(dado1)
 print "Dado 2: " + int$(dado2)
 print "Soma final: " + int$(soma)
 
+if palpite = soma
+  print "PARABÉNS! Você acertou a soma exata!"
+else
+  print "Que pena! A sorte não estava com você desta vez."
+endif
+
 end
 ```, file: "craps.bas"),
 ] <codigo-craps>
@@ -245,7 +249,7 @@ end
 
 Mude o código para exibir os resultados dos dados e da soma usando `using$`, por exemplo:
 
-```
+```plain
 print using$("", "Valor: %d", int(123))  
 ```
 

@@ -32,9 +32,9 @@ Programar costuma começar com uma tela preta e um "Olá, mundo" mudo. Aqui o "O
 
 = Seu primeiro programa
 
-Abra o aplicativo *hBasic*. No canto superior esquerdo deve haver o nome *unnamed program* que siginifica que o programa não possui um nome, pois não foi salvo ainda. 
+Abra o aplicativo *hBasic*. No canto superior esquerdo deve haver o nome *unnamed program* que significa que o programa não possui um nome, pois não foi salvo ainda. 
 
-Na primeira linha deve estar escrito *REM Start of BASIC! Program*, isto é, ínicio do programa. A palavra-chave *REM* (Remark) significa que esta linha é um comentário, uma observação, e será ignorada quando executarmos o programa. Fique à vontade para apagá-la, se desejar.
+Na primeira linha deve estar escrito *REM Start of BASIC! Program*, isto é, início do programa. A palavra-chave *REM* (Remark) significa que esta linha é um comentário, uma observação, e será ignorada quando executarmos o programa. Fique à vontade para apagá-la, se desejar.
 
 #dica[Para iniciar um novo programa, selecione a opção *Clear* no menu.]
 
@@ -56,7 +56,7 @@ end "Fim do Programa."
 
 No canto superior direito aparecerá `hello.bas`. Antes de executar, vá ao menu e selecione *Format*. O texto que você criou será formatado para o padrão BASIC, onde as palavras-chave são capitalizadas e as linhas são indentadas apropriadamente.
 
-Esta liguagem não é _case sensitive_, ou seja, tanto faz escrever `print` quanto `Print` ou `PRINT`, por exemplo.
+Esta linguagem não é _case sensitive_, ou seja, tanto faz escrever `print` quanto `Print` ou `PRINT`, por exemplo.
 
 
 #etapa("rodar")[Aumente o volume! Abra o menu e escolha *Run*.]
@@ -123,7 +123,7 @@ end
 #tela[Olá, Ana! Bem-vinda à programação de bolso.]
 
 #atencao[
-O sinal `=` significa "guarde isto aí", e não "é igual a" como na matemática. Primeiro declaramos a variável com um rótulo seguido do sinal de igualdade e o valor a ser amazenado.
+O sinal `=` significa "guarde isto aí", e não "é igual a" como na matemática. Primeiro declaramos a variável com um rótulo seguido do sinal de igualdade e o valor a ser armazenado.
 ]
 
 
@@ -324,7 +324,7 @@ if idade < 18 then comentario$ = "Você tem a vida inteira pela frente."
 ]
 
 #atencao[
-  O sinal de igualdade é usado em com dois sentidos. Primeiro, quando queremos atribuir um valor a uma variável:
+  O sinal de igualdade é usado com dois sentidos. Primeiro, quando queremos atribuir um valor a uma variável:
   
   - `nota = 7.5`
   - `conceito$ = "B"`

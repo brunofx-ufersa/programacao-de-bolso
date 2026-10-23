@@ -30,7 +30,7 @@ Este curso foi pensado para alunos de qualquer nível em programação e para ex
 
 = Preparando o ambiente
 
-Neste curso iremos usar o interpretador hBasic por ser mais atual. Este aplicatio não se encontra na Play Store, logo devemos realizar a instalação manual. Siga os passos:
+Neste curso iremos usar o interpretador hBasic por ser mais atual. Este aplicativo não se encontra na Play Store, logo devemos realizar a instalação manual. Siga os passos:
 
 + Permita a instalação de fontes desconhecidas no seu celular ou tablet.
 + Baixe o arquivo #link("https://humpity.github.io/promotes/rfo-basic/hbasic/repository/apks/hbasic.v5.68.apk")[hbasic.v5.68.apk].
@@ -41,7 +41,7 @@ Neste curso iremos usar o interpretador hBasic por ser mais atual. Este aplicati
 
 = Acessando o menu
 
-No canto superior direito deve haver o menu (três pontinhos). As principaus opções são:
+No canto superior direito deve haver o menu (três pontinhos). As principais opções são:
 
 
 #table(
@@ -49,10 +49,10 @@ No canto superior direito deve haver o menu (três pontinhos). As principaus op�
   [Opção], [O que faz],
   [*Run*], [Roda, executa o programa atual.],
   [*Load*], [Carrega um programa (arquivo `.bas`).],
-  [*Load and Run*], [Carrega um programa e roda imediatemente.],
+  [*Load and Run*], [Carrega um programa e roda imediatamente.],
   [*Save*], [Salva o programa atual.],
-  [*Save and Run*], [Salva o programa atual e roda imediatemente.],
-  [*Clear*], [Limpa a tela para inciar um programa do zero.],
+  [*Save and Run*], [Salva o programa atual e roda imediatamente.],
+  [*Clear*], [Limpa a tela para iniciar um programa do zero.],
   [*Search*], [Busca por palavras no programa.],
   [*Format*], [Formata o texto do programa que está no editor.],
   [*Delete*], [Apaga arquivos e diretórios.],
@@ -91,7 +91,7 @@ Como você deve ter notado nos exemplos de programas, é possível acessar recur
 ))
 
 
-Além disso, podemos tabalhar com banco de dados, realizar ligações, desenhar na tela, criar animações e até jogos. Dessa forma, transformamos nosso celular em um laboratório de programação interativo, com recursos que podem ser aplicados na solução de vários problemas.
+Além disso, podemos trabalhar com banco de dados, realizar ligações, desenhar na tela, criar animações e até jogos. Dessa forma, transformamos nosso celular em um laboratório de programação interativo, com recursos que podem ser aplicados na solução de vários problemas.
 
 = Guia
 
@@ -304,6 +304,7 @@ Com o ambiente configurado e os arquivos organizados, confira o que será aborda
   [Aula 05], [Laço `do`, açúcar sintático, acelerômetro e variável de estado],
   [Aula 06], [Tela gráfica, formas geométricas, coordenadas, animação e colisão],
   [Aula 07], [Funções, parâmetros, escopo, retorno e `include`],
+  [Aula 08], [Acelerômetro, mapeamento, suavização e tolerância],
 )
 
 
