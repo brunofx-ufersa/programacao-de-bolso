@@ -6,6 +6,8 @@
 //    #import "modelo-aula.typ": *
 //    #show: aula.with(numero: 2, titulo: "...", ...)
 // ============================================================
+  #import "@preview/codly:2.0.0" as codly  
+
 
 // ---------- Paleta ----------
 #let azul-escuro = rgb("#0B2A5B")
@@ -251,21 +253,23 @@
   set enum(numbering: n => text(fill: azul, weight: "bold")[#n.], indent: 4pt, spacing: 0.7em)
 
   // ----- código -----
-  show raw: set text(font: fonte-codigo, size: 9.3pt)
-  show raw.where(block: false): it => box(
-    fill: azul-claro, radius: 3pt, inset: (x: 3pt), outset: (y: 3pt),
-    text(fill: azul-escuro, it))
-  show raw.where(block: true): it => block(
-    width: 100%, breakable: false, above: 1em, below: 1em,
-    fill: rgb("#0F1B33"), radius: 8pt, inset: (x: 12pt, y: 11pt),
-  )[
-    #set text(fill: rgb("#E6EEFA"))
-    #show raw.line: l => {
-      set block(spacing: 2pt) 
-      grid(columns: (18pt, 1fr), align: horizon,
-      text(fill: rgb("#6B84AD"), size: 7.5pt, str(l.number)), l.body)}
-    #it
-  ]
+// texto e código inline: fica como está
+show raw: set text(font: fonte-codigo, size: 9.3pt, features: (calt: 0))
+show raw.where(block: false): it => box(
+  fill: azul-claro, radius: 3pt, inset: (x: 3pt), outset: (y: 3pt),
+  text(fill: azul-escuro, it))
+
+// blocos: tema escuro do codly, com o raio do curso
+show: codly.set_(radius: 8pt, padding: 6pt)
+
+// bloco "plain" (saída de programa) mantém uma caixa simples
+show raw.where(block: true): it => if it.lang == "plain" {
+  block(width: 100%, breakable: false, fill: rgb("#0F1B33"),
+    radius: 8pt, inset: (x: 12pt, y: 11pt),
+    text(fill: rgb("#E6EEFA"), it))
+} else { codly.new(it) }
+
+show figure.where(kind: raw): set figure.caption(position: top)
 
   // ----- tabelas -----
   set table(
