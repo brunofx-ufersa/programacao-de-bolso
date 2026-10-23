@@ -132,8 +132,9 @@ Exemplos para testar:
 
 = Calculadora de gorjeta
 
-#figure(  
-```
+#figure(caption: [Conta do restaurante])[
+  #codly.new(
+```basic
 input "Valor da conta? ", conta
 input "Porcentagem da gorjeta? ", pct
 input "Quantas pessoas? ", pessoas
@@ -146,8 +147,9 @@ print using$("br", "Gorjeta ........... R$ %.2f", gorjeta)
 print using$("br", "Total ............. R$ %.2f", total)
 print using$("br", "Por pessoa ........ R$ %.2f", porcab)
 ```,
-  caption: [Conta do restaurante (`gorjeta.bas`)],
-) <codigo-gorjeta>
+    file: "gorjeta.bas",
+  )
+]<codigo-gorjeta>
 
 
 O comando `using$` formata uma _string_, o primeiro parametro é a localidade. No caso acima, usamos `br` para Brasil, então a casa decimal vai ser exibida com vírgula ao invés de ponto. Em seguida, temos uma _string_ com `%f` e depois um valor. Esse `f` significa _float_ e é usado para números decimais. 
@@ -178,23 +180,25 @@ A função `rnd()` retorna um número decimal aleatório maior do que ou igual a
 
 Se escrevermos `d = floor(6 * rnd()) + 1`, `d` será um número aleatório dentro do conjunto ${1.0, 2.0, 3.0, 4.0, 5.0, 6.0}$. O próximo exemplo sorteia um número de 1 a 6, ou seja, simula um dado.
 
-#figure(
-```
+#figure(caption: [Dado de seis faces])[
+  #codly.new(
+```basic
 dado = floor(6 * rnd()) + 1
 
 print "Você jogou o dado..."
 print "Resultado: " + int$(dado)
-
 end
 ```,  
-  caption: [Dado de seis faces (`dado.bas`)],
-) <codigo-dado>
+  file: "dado.bas",
+  )
+]<codigo-dado>
 
 
 Use o intervalo de `rnd()` ($0 <= n < 1$) para criar uma probabilidade de $50%$ para cada evento do lançamento de uma moeda.
 
-#figure(
-```
+#figure(caption: [Cara ou coroa])[
+  #codly.new(
+```basic
 print "Lançando a moeda..."
 
 if rnd() < 0.5 
@@ -205,8 +209,9 @@ endif
 
 end
 ```,  
-  caption: [Cara ou coroa (`moeda.bas`)],
-) <codigo-moeda>
+  file: "moeda.bas",),
+] <codigo-moeda>
+
 
 
 = Jogo Craps
@@ -218,8 +223,9 @@ O jogo usa dois dados comuns de 6 lados e gira em torno do _shooter_ (o jogador 
 O programa a seguir simula uma rodado do jogo. O _shooter_ faz um palpite, o sistema lança os dados e imprime o resultado.
 
 
-#figure(
-```
+#figure(caption:[Craps])[
+#codly.new(
+```basic
 input "Aposte na soma dos dois dados (2 a 12): ", palpite
 
 dado1 = floor(6 * rnd()) + 1
@@ -230,15 +236,9 @@ print "Dado 1: " + int$(dado1)
 print "Dado 2: " + int$(dado2)
 print "Soma final: " + int$(soma)
 
-if palpite = soma 
-    print "PARABÉNS! Você acertou a soma exata!"
-else
-    print "Que pena! A sorte não estava com você desta vez."
-endif
-
 end
-```,  caption: [Craps (`craps.bas`)],
-) <codigo-craps>
+```, file: "craps.bas"),
+] <codigo-craps>
 
 
 #etapa("rodar")[Execute e boa sorte!]
@@ -265,7 +265,7 @@ Para isso:
 
 Exemplo de como usar uma caixa de diálogo para selecionar uma opção
 
-```
+```plain
 mode1$ = "Field"
 mode2$ = "Hardways"
 mode3$ = "Any 7, Any Craps"

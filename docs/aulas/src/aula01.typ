@@ -40,16 +40,16 @@ Na primeira linha deve estar escrito *REM Start of BASIC! Program*, isto é, ín
 
 Em seguida, digite o código abaixo no editor:
 
-#figure(  
-```
+#figure(caption: [Saudação])[
+#codly.new(
+```basic
 tts.init
 tts.speak "Olá! Eu sou o seu celular."
 tts.stop
 print "Olá! Eu sou o seu celular."
 end "Fim do Programa."
-```,
-  caption: [Saudação (`hello.bas`)],
-) <codigo-saudacao>
+```, file: "hello.bas", )
+ ] <codigo-saudacao>
 
 
 #etapa("salvar")[Salve o programa. Escolha um nome, `hello`, por exemplo!]
@@ -88,11 +88,10 @@ Cada linha é uma instrução. Veja o que cada uma faz:
 Escrever a mesma frase várias vezes é cansativo. Para guardar uma informação e reutilizá-la, usamos uma *variável*.
 
 #conceito("Variável")[
-  Uma variável é uma caixinha com uma etiqueta. A etiqueta é o *nome* e o
-  conteúdo é o *valor*. 
+  Uma variável é uma caixinha com uma etiqueta. A etiqueta é o *nome* e o conteúdo é o *valor*. 
 ]
 
-O RFO Basic tem dois tipos básicos de variável, distinguidos pelo nome:
+O hBasic tem dois tipos básicos de variável, distinguidos pelo nome:
 
 #table(
   columns: (2.6cm, 5.4cm, 1fr),
@@ -104,8 +103,9 @@ O RFO Basic tem dois tipos básicos de variável, distinguidos pelo nome:
 
 Um programa que usa variáveis de texto:
 
-#figure(
-```
+#figure(caption: [Saudação com variável])[
+#codly.new(
+```basic
 nome$ = "Ana"
 mensagem$ = "Olá, " + nome$ + "! Bem-vinda à programação de bolso."
 tts.init
@@ -114,8 +114,8 @@ tts.stop
 print mensagem$
 end
 ```,
-  caption: [Saudação com variável (`variavel.bas`)],
-) <codigo-saudacao-var>
+  file: "variavel.bas"),
+ ] <codigo-saudacao-var>
 
 
 
@@ -123,8 +123,7 @@ end
 #tela[Olá, Ana! Bem-vinda à programação de bolso.]
 
 #atencao[
-O sinal `=` significa "guarde isto aí", e não "é igual a" como na matemática.
-Primeiro declaramos a variável com um rótulo seguido do sinal de igualdade e o valor a ser amazenado.
+O sinal `=` significa "guarde isto aí", e não "é igual a" como na matemática. Primeiro declaramos a variável com um rótulo seguido do sinal de igualdade e o valor a ser amazenado.
 ]
 
 
@@ -141,18 +140,15 @@ RFO Basic também usa o comando `let` para denotar uma operação de atribuiçã
 Um número em RFO Basic é sempre um decimal. Isso significa que quando imprimimos, por exemplo 17, o resultado na tela será 17.0.
 
 
-#figure(
-```
+#figure(caption: [Concatenando texto com número])[
+#codly.new(
+```basic
 idade = 17
 print idade
 print "Idade: " + str$(idade) + " anos."
 ```,
-  caption: [Concatenando texto com número (`variavel.bas`)],
-) <codigo-concatenacao>
-
-#tela[
-  17.0 \ 
-  Idade: 17.0 anos.]
+  file: "variavel.bas",)
+] <codigo-concatenacao>
 
 
 O sinal `+` entre textos os *concatena*, ou seja, cola um no outro. Para colar
@@ -167,17 +163,15 @@ um *número* num texto, é preciso convertê-lo antes com `str$()`. Troque `str$
 
 Você deve ter notado que o comando `print` escreve um texto na tela do seu celular e salta para a próxima linha. Se o texto que quisermos mostrar for muito grande, podemos usar `;` para evitar a quebra de linha.
 
-#figure(
-```
+#figure(caption: [Impressão sem nova linha])[
+#codly.new(
+```basic
 print "Idade: ";
 print idade
 ```,
-  caption: [Impressão sem nova linha (`variavel.bas`)],
-) <codigo-print-sem-nova-linha>
+  file: "variavel.bas",)
+] <codigo-print-sem-nova-linha>
 
-
-#tela[
-  Idade: 17.0]
 
 
 = Perguntando ao usuário
@@ -185,20 +179,23 @@ print idade
 Um programa fica interessante quando conversa. O comando `input` mostra uma
 pergunta e guarda a resposta numa variável:
 
-#figure(
-```
+#figure(caption: [Entrada de dados])[
+#codly.new(
+```basic
 input "Como você se chama?", nome$
 input "Em que ano você nasceu?", nasc
+
 idade = 2026 - nasc
 frase$ = nome$ + ", você tem cerca de " + int$(idade) + " anos."
 tts.init
 tts.speak frase$
 tts.stop
 print frase$
+
 end
 ```,  
-  caption: [Entrada de dados (`input.bas`)],
-) <codigo-input>
+  file: "input.bas", ),
+] <codigo-input>
 
 
 Note que `nome$` recebe texto e `nasc` recebe um número. A linha `idade = 2026 - nasc` mostra que variáveis também fazem contas.
@@ -224,8 +221,9 @@ Até agora o programa seguiu sempre o mesmo caminho. Com `if`, ele escolhe camin
 
 Juntando tudo, temos o *assistente de bolso*:
 
-#figure(
-```
+#figure(caption: [Entrada de dados com decisão])[
+#codly.new(
+```basic
 input "Como você se chama?", nome$
 input "Em que ano você nasceu?", nasc
 idade = 2026 - nasc
@@ -247,14 +245,11 @@ tts.stop
 print saudacao$
 print comentario$
 ```,  
-  caption: [Entrada de dados com decisão (`input-if.bas`)],
-) <codigo-input-if>
+  file: "input-if.bas", )
+] <codigo-input-if>
 
 #conceito("Condição")[
-  O `if` testa uma pergunta de resposta *sim ou não*. Se for sim, executa o
-  bloco abaixo dele. Se for não, passa para o `elseif` seguinte e, por fim,
-  para o `else`. Só *um* dos blocos é executado, e o `endif` marca onde a
-  decisão termina.
+  O `if` testa uma pergunta de resposta *sim ou não*. Se for sim, executa o bloco abaixo dele. Se for não, passa para o `elseif` seguinte e, por fim, para o `else`. Só *um* dos blocos é executado, e o `endif` marca onde a decisão termina.
 ]
 
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge, shapes
@@ -301,7 +296,7 @@ Se o seu bloco condicional contiver apenas uma instrução,
 você pode usar uma forma mais simples, toda em uma única linha. 
 Nesta forma, a palavra-chave `then` é obrigatória, e não existem `elseIf` nem `endif`.
 
-```
+```plain
 if idade < 18 then comentario$ = "Você tem a vida inteira pela frente."
 ```
 
@@ -327,6 +322,21 @@ if idade < 18 then comentario$ = "Você tem a vida inteira pela frente."
   edge((1, 1), (1, 2), (0, 2), "->"),
 )
 ]
+
+#atencao[
+  O sinal de igualdade é usado em com dois sentidos. Primeiro, quando queremos atribuir um valor a uma variável:
+  
+  - `nota = 7.5`
+  - `conceito$ = "B"`
+  
+  Esse tipo de operação não é uma equação como aprendemos na escola. Por exemplo, `nota = nota + 1` significa: "pegue o valor atual de `nota`, some 1 e guarde o resultado de volta em `nota`", ou seja, `nota` agora é 8.5. O outro caso que usamos igualdade é em algum `if`, por exemplo:
+
+  - `if nota = 10`: nota é igual a 10?
+  - `elseif nota = 8: nota é igual a 8?`
+
+  Nesse caso, o sinal de igualdade funciona como um teste de uma condição e não como uma atribuição de valor. O valor de `nota` não muda.  
+]
+
 
 = Quebre o código!
 

@@ -38,23 +38,26 @@ correção teria de ser feita 10 vezes. Hoje aprenderemos a pedir ao celular que
 
 O `for` repete um bloco um número *conhecido* de vezes. Teste:
 
-#figure(
-```
+#figure(caption: [Laço `for` com cinco iterações])[
+  #codly.new(
+```basic
 for i = 1 to 5
   print "Rodada: " + int$(i)
 next i
+
 end
 ```,
-caption: [Laço `for` com cinco iterações (`laco-for.bas`)],
-) <codigo-for>
+  file: "laco-for.bas",
+  )
+]<codigo-for>
 
-#tela[
+ #tela[
   Rodada 1 \
   Rodada 2 \
   Rodada 3 \
   Rodada 4 \
   Rodada 5
-]
+] 
 
 #etapa("rodar")[Execute e depois troque o `5` por `8`. Só um número mudou, mas o programa repetiu mais vezes.]
 
@@ -62,13 +65,13 @@ A variável `i` é o *contador*. Ela começa em `1`, vale `2` na rodada seguinte
 laço e é executado uma vez para cada valor do contador.
 
 #conceito("Laço for")[
-  `for contador = início to fim` repete o corpo para cada valor do contador,
-  de `início` até `fim`. O `next` fecha o laço. Com `step`, o contador pode
+  `for contador = início to fim` repete o corpo para cada valor do contador,  de `início` até `fim`. O `next` fecha o laço. Com `step`, o contador pode
   pular de 2 em 2 (`step 2`) ou contar para trás (`step -1`).
 ]
 
-#figure(
-```
+#figure(caption: [Laço `for` com cinco iterações decrescentes])[
+  #codly.new(
+```basic
 tts.init
 
 for i = 5 to 1 step -1
@@ -83,9 +86,11 @@ tts.speak "Já"
 tts.stop
 
 end
-```,
-caption: [Laço `for` com cinco iterações decrescentes (`laco-for-step.bas`)],
-)
+```,  
+  file: "laco-for-step.bas`",
+  )
+]
+
 #etapa("rodar")[Execute a contagem. Depois troque o $5$ por $10$ e o `step -1` por `step -2`.]
 
 O *contador* começa em $5$ e diminui de $1$ em $1$ (`step -1`) até chegar a $1$. O programa entra no laço e executa todo o código até `next`, dizemos então que ocorreu uma iteração ou uma volta/rodada. Quando todas as iterações acabarem, o programa sai do laço.
@@ -93,11 +98,11 @@ O *contador* começa em $5$ e diminui de $1$ em $1$ (`step -1`) até chegar a $1
 
 == Acumuladores
 
-Repetição fica poderosa quando uma variável *acumula* resultados. Este laço
-soma os números de $1$ a $10$:
+Repetição fica poderosa quando uma variável *acumula* resultados. Este laço soma os números de 1 a 10:
 
-#figure(
-```
+#figure(caption: [Laço `for` com acumulador])[
+  #codly.new(
+```basic
 soma = 0
 
 for i = 1 to 10
@@ -107,9 +112,10 @@ next i
 print "Soma: " + int$(soma)
 
 end
-```,
-caption: [Laço `for` com acumulador (`acumulador.bas`)],
-)
+```,  
+  file: "acumulador.bas",
+  )
+]
 
 Como saber o que acontece dentro do laço? Simulamos o programa no papel, linha a linha.
 
@@ -125,9 +131,7 @@ Como saber o que acontece dentro do laço? Simulamos o programa no papel, linha 
 )
 
 #conceito("Acumulador")[
-  É uma variável que começa com um valor inicial (aqui, `soma = 0`) e é
-  atualizada a cada volta. A linha `soma = soma + i` lê assim: "pegue o
-  valor atual de `soma`, some `i` e guarde de volta em `soma`".
+  É uma variável que começa com um valor inicial (aqui, `soma = 0`) e é atualizada a cada volta. A linha `soma = soma + i` lê assim: "pegue o valor atual de `soma`, some `i` e guarde de volta em `soma`".
 ]
 
 
@@ -162,8 +166,9 @@ qualquer faixa.
 
 Antes de repetir, fazemos funcionar *uma* rodada. Esta é a versão mínima do jogo:
 
-#figure(
-```
+#figure(caption: [Quiz simples])[
+  #codly.new(
+```basic
 a = floor(rnd() * 9) + 1
 b = floor(rnd() * 9) + 1
 input int$(a) + " x " + int$(b) + " = ", resp
@@ -175,9 +180,11 @@ else
 endif
 
 end
-```,
-caption: [Quiz simples (`quiz.bas`)],
-)
+```,  
+  file: "quiz.bas",
+  )
+]
+
 O que acontece aqui:
 
 + `a` e `b` recebem números sorteados de 1 a 9.
@@ -200,15 +207,16 @@ de acertos e um resultado final.
   [Depois do laço], [Calcular a porcentagem e comentar o resultado.],
 )
 
-#figure(
-```
+#figure(caption: [Quiz com 10 perguntas e placar])[
+  #codly.new(
+```basic
 acertos = 0
 total = 10
 
 for i = 1 to total
   a = floor(rnd() * 9) + 1
   b = floor(rnd() * 9) + 1
-  input "int$(a) + " x " + int$(b) + " = ", resp
+  input int$(a) + " x " + int$(b) + " = ", resp
 
   if resp = a * b
     acertos = acertos + 1
@@ -223,9 +231,10 @@ print "Você acertou " + int$(acertos) + " de " + int$(total);
 print " (" + int$(porcentagem) + "%)"
 
 end
-```,
-caption: [Quiz com 10 perguntas e placar (`for-quiz.bas`)],
-)
+```,  
+  file: "for-quiz.bas")
+]
+
 
 #tela[
   Acertou! \
@@ -269,7 +278,7 @@ Mude *uma coisa de cada vez* e observe o que acontece:
   Pista: o resto da divisão descobre a vez de quem. A expressão `mod(i, 2)`
   vale 1 nas voltas ímpares e 0 nas pares:
 
-  ```
+  ```plain
   if mod(i, 2) = 1
     ! vez do jogador 1
   else
@@ -297,5 +306,5 @@ Mude *uma coisa de cada vez* e observe o que acontece:
 )
 
 #proxima[
-  *Aula 4: Multiplicação sem fim.* E se não soubermos *quantas* perguntas vão ser feitas? O jogo só termina quando o jogador *errar*. Para isso conheceremos o laço `while`, que repete *enquanto* uma condição for verdadeira, e usaremos uma sequência de acertos para aumentar a dificuldade.
+  *Aula 4: Super Quiz.* E se não soubermos *quantas* perguntas vão ser feitas? O jogo só termina quando o jogador *errar*. Para isso conheceremos o laço `while`, que repete *enquanto* uma condição for verdadeira, e usaremos uma sequência de acertos para aumentar a dificuldade.
 ]
