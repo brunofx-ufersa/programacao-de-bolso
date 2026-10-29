@@ -42,6 +42,7 @@
 ]
 
 #let dica(body)     = caixa("Dica", azul, azul-claro, body)
+#let nota(body)     = caixa("Nota", verde, azul-claro, body)
 #let atencao(body)  = caixa("Atenção", laranja, rgb("#FFF4DB"), body)
 #let conceito(titulo, body) = caixa("Conceito · " + titulo, verde, rgb("#E4F5EE"), body)
 
