@@ -1,6 +1,11 @@
+
 # ============================================================
-# Compila as aulas Typst -> PDF e empacota os códigos RFO BASIC
-# Nome da pasta gerada para os códigos: curso-ufersa
+# Compila aulas Typst -> PDF e empacota os recursos hBasic
+#
+# Pacotes:
+#   aulas.zip        -> PDFs das aulas (BROWSER)
+#   curso-ufersa.zip -> códigos .bas (source/)
+#   assets-curso.zip -> assets do curso (data/)
 # ============================================================
 
 name: build-aulas-e-codigos
@@ -20,9 +25,13 @@ env:
   SRC_DIR: docs/aulas/src
   OUT_DIR: docs/aulas
   CODE_DIR: codigos
+  ASSETS_DIR: assets
 
 jobs:
+
+  # ==========================================================
   # BUILD 1: Compilação dos PDFs em Typst
+  # ==========================================================
   build-pdfs:
     name: Compilar PDFs (Typst)
     runs-on: ubuntu-latest
@@ -41,24 +50,26 @@ jobs:
         run: |
           shopt -s nullglob nocaseglob
           files=("${SRC_DIR}"/aula*.typ)
+
           if [ ${#files[@]} -eq 0 ]; then
-            echo "Nenhum arquivo aula*.typ encontrado em ${SRC_DIR}."
+            echo "Nenhum arquivo aula*.typ encontrado."
           else
             for f in "${files[@]}"; do
               nome=$(basename "${f%.typ}")
-              echo "==> Compilando $f -> ${OUT_DIR}/${nome}.pdf"
+              echo "==> Compilando $f"
               typst compile "$f" "${OUT_DIR}/${nome}.pdf"
             done
           fi
 
-      - name: Compilar PDF completo do curso (se apostila.typ existir)
+      - name: Compilar PDF completo do curso
         run: |
           shopt -s nocaseglob
           if [ -f "${SRC_DIR}/apostila.typ" ]; then
-            echo "==> Compilando PDF completo"
-            typst compile "${SRC_DIR}/apostila.typ" "${OUT_DIR}/apostila-completa.pdf"
+            echo "==> Compilando apostila completa"
+            typst compile "${SRC_DIR}/apostila.typ" \
+              "${OUT_DIR}/apostila-completa.pdf"
           else
-            echo "apostila.typ não encontrado - pulando PDF completo."
+            echo "apostila.typ não encontrado."
           fi
 
       - name: Enviar PDFs como Artifact
@@ -68,7 +79,26 @@ jobs:
           path: ${{ env.OUT_DIR }}/*.pdf
           if-no-files-found: error
 
-  # BUILD 2: Preparação da pasta curso-ufersa com os códigos
+      # Atualiza os PDFs compilados no repositório
+      - name: Atualizar PDFs no repositório
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add "${OUT_DIR}"/*.pdf
+
+          if git diff --cached --quiet; then
+            echo "Nenhum PDF foi alterado."
+          else
+            git commit -m "Atualiza PDFs compilados"
+            git push
+          fi
+
+  # ==========================================================
+  # BUILD 2: Preparação dos códigos .bas
+  # ==========================================================
   package-code:
     name: Preparar Códigos (curso-ufersa)
     runs-on: ubuntu-latest
@@ -79,25 +109,59 @@ jobs:
 
       - name: Organizar códigos na pasta curso-ufersa
         run: |
-          mkdir -p curso-ufersa
-          if [ -d "${CODE_DIR}" ]; then
-            cp -r "${CODE_DIR}"/* curso-ufersa/
-          else
+          mkdir -p curso-rfo
+
+          if [ ! -d "${CODE_DIR}" ]; then
             echo "::error::Diretório ${CODE_DIR} não encontrado!"
             exit 1
           fi
 
-      - name: Enviar pasta curso-ufersa como Artifact
+          # Copia somente arquivos BASIC (.bas)
+          find "${CODE_DIR}" -type f -iname "*.bas" \
+            -exec cp --parents {} curso-rfo/ \;
+
+      - name: Enviar códigos como Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: curso-ufersa
-          path: curso-ufersa/
+          name: curso-rfo
+          path: curso-rfo/
           if-no-files-found: error
 
-  # JOB DE PUBLICAÇÃO: Roda apenas quando publicar uma Release
+  # ==========================================================
+  # BUILD 3: Preparação dos assets
+  # ==========================================================
+  package-assets:
+    name: Preparar Assets do Curso
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Verificar e organizar assets
+        run: |
+          mkdir -p assets-rfo
+
+          if [ -d "${ASSETS_DIR}" ]; then
+            cp -a "${ASSETS_DIR}/." assets-rfo/
+          else
+            echo "Diretório ${ASSETS_DIR} ainda não existe."
+            echo "Criando pacote vazio."
+          fi
+
+      - name: Enviar assets como Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: assets-rfo
+          path: assets-rfo/
+          if-no-files-found: warn
+
+  # ==========================================================
+  # JOB DE PUBLICAÇÃO: Executado ao publicar uma Release
+  # ==========================================================
   publish-release:
-    name: Anexar ao Release
-    needs: [build-pdfs, package-code]
+    name: Publicar pacotes na Release
+    needs: [build-pdfs, package-code, package-assets]
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
 
@@ -106,21 +170,54 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: aulas-pdf
-          path: release-files/
+          path: release-files/aulas/
 
-      - name: Baixar pasta de códigos curso-ufersa
+      - name: Baixar códigos
         uses: actions/download-artifact@v4
         with:
-          name: curso-ufersa
-          path: release-files/curso-ufersa/
+          name: curso-rfo
+          path: release-files/curso-rfo/
 
-      - name: Compactar curso-ufersa.zip para o Release
+      - name: Baixar assets
+        uses: actions/download-artifact@v4
+        with:
+          name: assets-curso
+          path: release-files/assets-rfo/
+
+      - name: Gerar ZIP das aulas
+        run: |
+          cd release-files/aulas
+          zip -j ../aulas.zip *.pdf
+
+      - name: Gerar ZIP dos códigos
         run: |
           cd release-files
-          zip -r curso-ufersa.zip curso-ufersa/
-          rm -rf curso-ufersa
+          zip -r curso-rfo.zip curso-rfo/
 
-      - name: Anexar todos os arquivos ao Release
+      - name: Gerar ZIP dos assets
+        run: |
+          cd release-files
+          zip -r assets-rfo.zip assets-rfo/
+
+      - name: Gerar catálogo de pacotes
+        env:
+          VERSION: ${{ github.event.release.tag_name }}
+        run: |
+          cat > release-files/catalogo.txt << EOF
+          # PROGRAMACAO DE BOLSO
+          # id|descricao|arquivo|destino|categoria
+
+          versao|${VERSION}
+          codigos|Codigos das aulas|curso-rfo.zip|source/|codigo
+          assets|Recursos do curso|assets-rfo.zip|data/|assets
+          EOF
+
+      - name: Anexar arquivos ao Release
         uses: softprops/action-gh-release@v2
         with:
-          files: release-files/*
+          files: |
+            release-files/aulas/*.pdf
+            release-files/aulas-rfo.zip
+            release-files/curso-rfo.zip
+            release-files/assets-rfo.zip
+            release-files/catalogo.txt
