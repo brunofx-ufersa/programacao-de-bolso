@@ -11,10 +11,6 @@
 name: build-aulas-e-codigos
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   release:
     types: [published]
 
