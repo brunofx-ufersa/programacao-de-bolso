@@ -149,6 +149,7 @@ jobs:
             echo "Criando pacote vazio."
           fi
 
+          zip -r assets-rfo.zip assets-rfo/
       - name: Enviar assets como Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -181,13 +182,13 @@ jobs:
       - name: Baixar assets
         uses: actions/download-artifact@v4
         with:
-          name: assets-curso
+          name: assets-rfo
           path: release-files/assets-rfo/
 
       - name: Gerar ZIP das aulas
         run: |
           cd release-files/aulas
-          zip -j ../aulas.zip *.pdf
+          zip -j ../aulas-rfo.zip *.pdf
 
       - name: Gerar ZIP dos códigos
         run: |
