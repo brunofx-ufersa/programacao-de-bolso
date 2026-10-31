@@ -47,6 +47,16 @@ jobs:
       - name: Garantir diretório de saída
         run: mkdir -p "${OUT_DIR}"
 
+      - name: Instalar fonte Inter
+        run: |
+          mkdir -p ~/.local/share/fonts
+          wget -O /tmp/Inter.zip \
+            https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip
+          unzip -o /tmp/Inter.zip -d /tmp/inter
+          find /tmp/inter -type f -name "*.ttf" \
+            -exec cp {} ~/.local/share/fonts/ \;
+          fc-cache -f
+  
       - name: Compilar cada aula para PDF
         run: |
           shopt -s nullglob nocaseglob
@@ -73,7 +83,7 @@ jobs:
             for f in "${files[@]}"; do
               nome=$(basename "${f%.typ}")
               echo "==> Compilando $f"
-              typst compile "$f" "${OUT_DIR}/${nome}.pdf"
+              typst --root . compile "$f" "${OUT_DIR}/${nome}.pdf"
             done
           fi
 
