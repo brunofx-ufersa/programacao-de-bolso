@@ -177,11 +177,12 @@ jobs:
           fi
 
           zip -r assets-rfo.zip assets-rfo/
+          
       - name: Enviar assets como Artifact
         uses: actions/upload-artifact@v4
         with:
           name: assets-rfo
-          path: assets-rfo/
+          path: assets-rfo.zip
           if-no-files-found: warn
 
   # ==========================================================
@@ -210,7 +211,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: assets-rfo
-          path: release-files/assets-rfo/
+          path: release-files/
 
       - name: Gerar ZIP das aulas
         run: |
@@ -222,11 +223,10 @@ jobs:
           cd release-files
           zip -r curso-rfo.zip curso-rfo/
 
-      - name: Gerar ZIP dos assets
+      - name: Oganizar ZIP dos assets
         run: |
-          cd release-files
-          zip -r assets-rfo.zip assets-rfo/
-
+          mv release-files/assets-rfo.zip release-files/assets-rfo.zip
+          
       - name: Gerar catálogo de pacotes
         env:
           VERSION: ${{ github.event.release.tag_name }}
