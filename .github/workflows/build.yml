@@ -83,7 +83,7 @@ jobs:
             for f in "${files[@]}"; do
               nome=$(basename "${f%.typ}")
               echo "==> Compilando $f"
-              typst --root . compile "$f" "${OUT_DIR}/${nome}.pdf"
+              typst compile --root . "$f" "${OUT_DIR}/${nome}.pdf"
             done
           fi
 
