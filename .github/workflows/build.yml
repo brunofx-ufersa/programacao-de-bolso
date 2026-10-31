@@ -222,11 +222,7 @@ jobs:
         run: |
           cd release-files
           zip -r curso-rfo.zip curso-rfo/
-
-      - name: Oganizar ZIP dos assets
-        run: |
-          mv release-files/assets-rfo.zip release-files/assets-rfo.zip
-          
+    
       - name: Gerar catálogo de pacotes
         env:
           VERSION: ${{ github.event.release.tag_name }}
