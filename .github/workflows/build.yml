@@ -23,7 +23,8 @@ permissions:
 
 env:
   SRC_DIR: docs/aulas/src
-  OUT_DIR: docs/aulas
+  CMP_DIR: docs/aulas/complementar
+  OUT_DIR: aulas-pdf
   CODE_DIR: codigos
   ASSETS_DIR: assets
 
@@ -60,6 +61,21 @@ jobs:
               typst compile "$f" "${OUT_DIR}/${nome}.pdf"
             done
           fi
+ 
+      - name: Compilar cada aula complementar para PDF
+        run: |
+          shopt -s nullglob nocaseglob
+          files=("${CMP_DIR}"/complementar*.typ)
+
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "Nenhum arquivo complementar*.typ encontrado."
+          else
+            for f in "${files[@]}"; do
+              nome=$(basename "${f%.typ}")
+              echo "==> Compilando $f"
+              typst compile "$f" "${OUT_DIR}/${nome}.pdf"
+            done
+          fi
 
       - name: Compilar PDF completo do curso
         run: |
@@ -80,21 +96,22 @@ jobs:
           if-no-files-found: error
 
       # Atualiza os PDFs compilados no repositório
-      - name: Atualizar PDFs no repositório
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email \
-            "41898282+github-actions[bot]@users.noreply.github.com"
+      #- name: Atualizar PDFs no repositório
+      #  if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      #  run: |
+      #    git config user.name "github-actions[bot]"
+      #    git config user.email \
+      #      "41898282+github-actions[bot]@users.noreply.github.com"#
 
-          git add "${OUT_DIR}"/*.pdf
 
-          if git diff --cached --quiet; then
-            echo "Nenhum PDF foi alterado."
-          else
-            git commit -m "Atualiza PDFs compilados"
-            git push
-          fi
+      #    git add "${OUT_DIR}"/*.pdf
+
+       #   if git diff --cached --quiet; then
+       #     echo "Nenhum PDF foi alterado."
+       #   else
+       #     git commit -m "Atualiza PDFs compilados"
+       #     git push
+       #   fi
 
   # ==========================================================
   # BUILD 2: Preparação dos códigos .bas
@@ -217,7 +234,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            release-files/aulas/*.pdf
             release-files/aulas-rfo.zip
             release-files/curso-rfo.zip
             release-files/assets-rfo.zip
