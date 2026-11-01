@@ -254,7 +254,7 @@ O comando `list.clear` limpa a lista apontada pelo ponteiro e define o tamanho d
   [`list.add.list list_dest, list_src`], [Adiciona os elementos de `list_src` ao final de `list_dest`.], 
   [`list.add.array list_dest, array[]`], [Adiciona os elementos de `array` ao final de `list_dest`.],
   [`list.toArray list_ptr, array[]`], [Converte a lista em _array_ unidimensional],
-  [`list.type list_prt, tipo$`], [Determina o tipo, "S" para string ou "N" para número],
+  [`list.type list_prt, tipo$`], [Determina o tipo, `"S"` para string ou `"N"` para número],
 )
 
 
